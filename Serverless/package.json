@@ -1,0 +1,24 @@
+{
+  "name": "project-u",
+  "version": "0.1.0",
+  "description": "An on-chain game profile management framework",
+  "main": ".eslintrc.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/btspoony/project-u.git"
+  },
+  "keywords": [
+    "Web3",
+    "Game",
+    "Flow"
+  ],
+  "author": "Bohao Tang <tech@btang.cn>",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/btspoony/project-u/issues"
+  },
+  "homepage": "https://github.com/btspoony/project-u#readme"
+}

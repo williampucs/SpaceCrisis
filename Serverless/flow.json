@@ -66,7 +66,7 @@
         "mainnet": "0xa340dc0a4ec828ab"
       }
     },
-    "ProfileInterface": "./cadence/contracts/ProfileInterface.cdc",
+    "Interfaces": "./cadence/contracts/Interfaces.cdc",
     "PlayerKit": "./cadence/contracts/PlayerKit.cdc",
     "GameServices": "./cadence/contracts/GameServices.cdc",
     "Helper": "./cadence/contracts/Helper.cdc"
