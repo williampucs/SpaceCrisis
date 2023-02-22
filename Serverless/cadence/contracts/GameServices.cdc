@@ -1,0 +1,4 @@
+
+pub contract GameServices {
+  
+}
