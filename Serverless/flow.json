@@ -66,14 +66,23 @@
         "mainnet": "0xa340dc0a4ec828ab"
       }
     },
+    "Helper": "./cadence/contracts/Helper.cdc",
     "Interfaces": "./cadence/contracts/Interfaces.cdc",
     "PlayerKit": "./cadence/contracts/PlayerKit.cdc",
     "GameServices": "./cadence/contracts/GameServices.cdc",
-    "Helper": "./cadence/contracts/Helper.cdc"
+    "SpaceCrisisPlayerProfile": "./cadence/contracts/space-crisis/SpaceCrisisPlayerProfile.cdc",
+    "SpaceCrisisGameService": "./cadence/contracts/space-crisis/SpaceCrisisGameService.cdc"
 	},
 	"deployments": {
 		"emulator": {
-			"emulator-account": []
+      "emulator-account": [
+        "Helper",
+        "Interfaces",
+        "PlayerKit",
+        "GameServices",
+        "SpaceCrisisPlayerProfile",
+        "SpaceCrisisGameService"
+      ]
 		}
 	}
 }

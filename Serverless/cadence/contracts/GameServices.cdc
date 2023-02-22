@@ -175,7 +175,7 @@ pub contract GameServices {
       return &profilesRef[userId] as auth &{Interfaces.ProfilePrivate}? ?? panic("Impossible")
     }
 
-    pub fun borrowProfileAuth(_ source: String, platform: String, uid: String): auth &{Interfaces.ProfilePrivate}? {
+    pub fun borrowProfileAuth(_ source: String, platform: String, uid: String): auth &{Interfaces.ProfilePublic, Interfaces.ProfilePrivate}? {
       // try load from guest first
       let hq = GameServices.borrowServiceHQPriv()
       let service = hq.borrowService(source) ?? panic("Invalid service source.")
@@ -183,7 +183,7 @@ pub contract GameServices {
 
       let userId = Helper.PlatformIdentity(platform, uid).toString()
       if guests[userId] != nil {
-        return &guests[userId] as auth &{Interfaces.ProfilePrivate}?
+        return &guests[userId] as auth &{Interfaces.ProfilePublic, Interfaces.ProfilePrivate}?
       }
 
       // try load from player kit
