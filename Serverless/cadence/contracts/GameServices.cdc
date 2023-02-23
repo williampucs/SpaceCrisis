@@ -7,6 +7,9 @@ pub contract GameServices {
   pub let GameSerivcesPublicPath: PublicPath;
   pub let GameSerivcesPrivatePath: PrivatePath;
 
+  pub let GameServicesAdminStoragePath: StoragePath;
+  pub let GameServicesControlerStoragePath: StoragePath;
+
   // Events
 
   pub event ContractInitialized()
@@ -224,9 +227,14 @@ pub contract GameServices {
     self.GameSerivcesPublicPath = /public/TheGameSerivcesPath_V1
     self.GameSerivcesPrivatePath = /private/TheGameSerivcesPath_V1
 
+    self.GameServicesAdminStoragePath = /storage/TheGameSerivcesAdminPath_V1
+    self.GameServicesControlerStoragePath = /storage/TheGameSerivcesControlerPath_V1
+
     self.account.save(<- create ServicesHQ(), to: self.GameSerivcesStoragePath)
     self.account.link<&ServicesHQ{ServicesHQPublic}>(self.GameSerivcesPublicPath, target: self.GameSerivcesStoragePath)
     self.account.link<&ServicesHQ{ServicesHQPrivate}>(self.GameSerivcesPrivatePath, target: self.GameSerivcesStoragePath)
+
+    self.account.save(<- create ServicesHQController(), to: self.GameServicesControlerStoragePath)
 
     emit ContractInitialized()
   }
