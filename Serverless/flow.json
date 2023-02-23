@@ -66,10 +66,33 @@
         "mainnet": "0xa340dc0a4ec828ab"
       }
     },
+    "NFTCatalog": {
+      "source": "./cadence/contracts/deps/NFTCatalog.cdc",
+      "aliases": {
+        "testnet": "0x324c34e1c517e4db",
+        "mainnet": "0x49a7cda3a1eecc29"
+      }
+    },
+    "NFTRetrieval": {
+      "source": "./cadence/contracts/deps/NFTRetrieval.cdc",
+      "aliases": {
+        "testnet": "0x324c34e1c517e4db",
+        "mainnet": "0x49a7cda3a1eecc29"
+      }
+    },
+    "FCLCrypto": {
+      "source": "./cadence/contracts/deps/FCLCrypto.cdc",
+      "aliases": {
+        "testnet": "0x5b250a8a85b44a67",
+        "mainnet": "0xdb6b70764af4ff68"
+      }
+    },
     "Helper": "./cadence/contracts/Helper.cdc",
     "Interfaces": "./cadence/contracts/Interfaces.cdc",
     "PlayerKit": "./cadence/contracts/PlayerKit.cdc",
     "GameServices": "./cadence/contracts/GameServices.cdc",
+    "ProfileClaimer": "./cadence/contracts/ProfileClaimer.cdc",
+    "SpaceCrisisDefination": "./cadence/contracts/space-crisis/SpaceCrisisDefination.cdc",
     "SpaceCrisisPlayerProfile": "./cadence/contracts/space-crisis/SpaceCrisisPlayerProfile.cdc",
     "SpaceCrisisGameService": "./cadence/contracts/space-crisis/SpaceCrisisGameService.cdc"
 	},
@@ -80,6 +103,8 @@
         "Interfaces",
         "PlayerKit",
         "GameServices",
+        "ProfileClaimer",
+        "SpaceCrisisDefination",
         "SpaceCrisisPlayerProfile",
         "SpaceCrisisGameService"
       ]

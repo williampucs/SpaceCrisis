@@ -11,10 +11,10 @@ pub contract PlayerKit {
 
   pub event ContractInitialized()
 
-  pub event ProfileAttached(source: String, address: Address, profileUid: UInt64)
-  pub event ProfileRevoked(source: String, address: Address, profileUid: UInt64)
+  pub event ProfileAttached(source: String, address: Address, uuid: UInt64)
+  pub event ProfileRevoked(source: String, address: Address, uuid: UInt64)
 
-  pub event PlayerUpsertIdentity(address: Address, platform: String, profileUid: String, name: String?, image: String?)
+  pub event PlayerUpsertIdentity(address: Address, userId: String, name: String?, image: String?)
 
   // States
 
@@ -25,7 +25,7 @@ pub contract PlayerKit {
 
   pub resource interface ProfliesPublic {
     pub fun getIdentities(): [Helper.PlatformInfo]
-    pub fun getIdentity(platform: String): Helper.PlatformInfo
+    pub fun getIdentity(platform: String): Helper.PlatformInfo?
 
     pub fun borrowProfile(_ source: String): &{Interfaces.ProfilePublic}?
     access(account) fun borrowProfileAuth(_ source: String): auth &{Interfaces.ProfilePublic, Interfaces.ProfilePrivate}?
@@ -58,8 +58,8 @@ pub contract PlayerKit {
       return self.linkedIdentities.values
     }
 
-    pub fun getIdentity(platform: String): Helper.PlatformInfo {
-      return self.linkedIdentities[platform] ?? panic("Platform not found.")
+    pub fun getIdentity(platform: String): Helper.PlatformInfo? {
+      return self.linkedIdentities[platform]
     }
 
     pub fun borrowProfile(_ source: String): &{Interfaces.ProfilePublic}? {
@@ -85,8 +85,7 @@ pub contract PlayerKit {
 
       emit PlayerUpsertIdentity(
         address: profileAddr,
-        platform: platform,
-        profileUid: info.identity.uid,
+        userId: info.identity.toString(),
         name: info.display?.name,
         image: info.display?.thumbnail?.uri()
       )
@@ -114,14 +113,14 @@ pub contract PlayerKit {
       let uuid = profile.uuid
       self.profiles[sourceName] <-! profile
 
-      emit ProfileAttached(source: sourceName, address: self.owner!.address, profileUid: uuid)
+      emit ProfileAttached(source: sourceName, address: self.owner!.address, uuid: uuid)
     }
 
     pub fun revokeProfile(_ source: String): @{Interfaces.ProfilePublic} {
       let profile <- self.profiles.remove(key: source) ?? panic("Profile not exist")
       let uuid = profile.uuid
 
-      emit ProfileRevoked(source: source, address: self.owner!.address, profileUid: uuid)
+      emit ProfileRevoked(source: source, address: self.owner!.address, uuid: uuid)
 
       return <- profile
     }

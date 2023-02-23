@@ -28,20 +28,19 @@ pub contract GameServices {
     pub fun claimHQAdmin(claimer: &PlayerKit.Profiles{PlayerKit.ProfilesPrivate}): @ServicesHQAdmin
     // basic info
     pub fun getRegisteredServices(): [String]
-    pub fun isGuest(_ source: String, platform: String, uid: String): Bool
+    pub fun isGuest(_ source: String, identifier: Helper.PlatformIdentity): Bool
     // borrow
     pub fun borrowService(_ source: String): &{Interfaces.GameServicePublic}?
 
     // only can be claim by PlayerKit
-    access(account) fun claimProfile(_ source: String, platform: String, uid: String): @{Interfaces.ProfilePublic, Interfaces.ProfilePrivate}
+    access(account) fun claimProfile(_ source: String, identifier: Helper.PlatformIdentity): @{Interfaces.ProfilePublic, Interfaces.ProfilePrivate}
   }
 
   pub resource interface ServicesHQPrivate {
     // borrow
     pub fun borrowServiceAuth(_ source: String): auth &{Interfaces.GameServicePublic}?
-
     // only can be invoked by services
-    access(account) fun attachService(service: @{Interfaces.GameServicePublic})
+    pub fun attachService(service: @{Interfaces.GameServicePublic})
   }
 
   pub resource ServicesHQ: ServicesHQPublic, ServicesHQPrivate {
@@ -91,9 +90,9 @@ pub contract GameServices {
       return self.services.keys
     }
 
-    pub fun isGuest(_ source: String, platform: String, uid: String): Bool {
+    pub fun isGuest(_ source: String, identifier: Helper.PlatformIdentity): Bool {
       let guests = self.borrowGuestProfiles(source)
-      return guests[Helper.PlatformIdentity(platform, uid).toString()] != nil
+      return guests[identifier.toString()] != nil
     }
 
     // ---- writable ----
@@ -107,7 +106,7 @@ pub contract GameServices {
       )
     }
 
-    access(account) fun attachService(service: @{Interfaces.GameServicePublic}) {
+    pub fun attachService(service: @{Interfaces.GameServicePublic}) {
       pre {
         self.services[service.getSource()] == nil: "Service exists"
       }
@@ -123,16 +122,16 @@ pub contract GameServices {
       emit ServiceAttached(source: source)
     }
 
-    access(account) fun claimProfile(_ source: String, platform: String, uid: String): @{Interfaces.ProfilePublic, Interfaces.ProfilePrivate} {
+    access(account) fun claimProfile(_ source: String, identifier: Helper.PlatformIdentity): @{Interfaces.ProfilePublic, Interfaces.ProfilePrivate} {
       let guests = self.borrowGuestProfiles(source)
-      let userId = Helper.PlatformIdentity(platform, uid).toString()
+      let userId = identifier.toString()
       if guests[userId] == nil {
         panic("Profile not exists")
       }
 
       let profile <- guests.remove(key: userId) ?? panic("Profile not exist")
 
-      emit ProfileClaimed(source: source, platform: platform, uid: uid)
+      emit ProfileClaimed(source: source, platform: identifier.platform, uid: identifier.uid)
 
       return <- profile
     }
@@ -162,6 +161,11 @@ pub contract GameServices {
 
   pub resource ServicesHQController {
 
+    pub fun borrowServiceAuth(_ source: String): auth &{Interfaces.GameServicePublic}? {
+      let hq = GameServices.borrowServiceHQPriv()
+      return hq.borrowServiceAuth(source)
+    }
+
     pub fun createProfile(_ source: String, platform: String, uid: String): auth &{Interfaces.ProfilePrivate} {
       let hq = GameServices.borrowServiceHQPriv()
       let service = hq.borrowService(source) ?? panic("Invalid service source.")
@@ -176,18 +180,7 @@ pub contract GameServices {
     }
 
     pub fun borrowProfileAuth(_ source: String, platform: String, uid: String): auth &{Interfaces.ProfilePublic, Interfaces.ProfilePrivate}? {
-      // try load from guest first
-      let hq = GameServices.borrowServiceHQPriv()
-      let service = hq.borrowService(source) ?? panic("Invalid service source.")
-      let guests = hq.borrowGuestProfiles(source)
-
-      let userId = Helper.PlatformIdentity(platform, uid).toString()
-      if guests[userId] != nil {
-        return &guests[userId] as auth &{Interfaces.ProfilePublic, Interfaces.ProfilePrivate}?
-      }
-
-      // try load from player kit
-      return PlayerKit.borrowProfileByPlatform(platform: platform, uid: uid, source: source)
+      return GameServices.borrowProfileAuth(source, platform: platform, uid: uid)
     }
   }
 
@@ -197,13 +190,33 @@ pub contract GameServices {
     return self.account.getCapability<&ServicesHQ{ServicesHQPublic}>(self.GameSerivcesPublicPath).borrow() ?? panic("Failed to borrow.")
   }
 
-  access(contract) fun borrowServiceHQPriv(): &ServicesHQ {
-    return self.account.borrow<&ServicesHQ>(from: self.GameSerivcesStoragePath) ?? panic("Failed to borrow")
-  }
-
   access(account) fun attachService(service: @{Interfaces.GameServicePublic}) {
     let hq = self.borrowServiceHQPriv()
     hq.attachService(service: <-service)
+  }
+
+  access(account) fun borrowServiceAuth(_ source: String): auth &{Interfaces.GameServicePublic}? {
+    let hq = self.borrowServiceHQPriv()
+    return hq.borrowServiceAuth(source)
+  }
+
+  access(account) fun borrowProfileAuth(_ source: String, platform: String, uid: String):  auth &{Interfaces.ProfilePublic, Interfaces.ProfilePrivate}? {
+    // try load from guest first
+    let hq = self.borrowServiceHQPriv()
+    let service = hq.borrowService(source) ?? panic("Invalid service source.")
+    let guests = hq.borrowGuestProfiles(source)
+
+    let userId = Helper.PlatformIdentity(platform, uid).toString()
+    if guests[userId] != nil {
+      return &guests[userId] as auth &{Interfaces.ProfilePublic, Interfaces.ProfilePrivate}?
+    }
+
+    // try load from player kit
+    return PlayerKit.borrowProfileByPlatform(platform: platform, uid: uid, source: source)
+  }
+
+  access(contract) fun borrowServiceHQPriv(): &ServicesHQ {
+    return self.account.borrow<&ServicesHQ>(from: self.GameSerivcesStoragePath) ?? panic("Failed to borrow")
   }
 
   init() {
