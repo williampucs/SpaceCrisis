@@ -11,16 +11,10 @@ transaction(
     target: Address,
     valid: Bool
 ) {
-
-    prepare(service: AuthAccount, acct: AuthAccount) {
-        assert(
-            acct.borrow<&GameServices.ServicesHQController>(from: GameServices.GameServicesControlerStoragePath) == nil,
-            message: "Controller resource should be nil"
-        )
-
+    prepare(service: AuthAccount) {
         let service = service.borrow<&GameServices.ServicesHQ>(from: GameServices.GameSerivcesStoragePath)
             ?? panic("Not the service account.")
 
-        acct.save(<- service.createHQController(), to: GameServices.GameServicesControlerStoragePath)
+        service.updateWhitelistFlag(addr: target, flag: valid)
     }
 }
