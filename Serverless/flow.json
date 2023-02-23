@@ -99,6 +99,9 @@
 	"deployments": {
 		"emulator": {
       "emulator-account": [
+        "NFTCatalog",
+        "NFTRetrieval",
+        "FCLCrypto",
         "Helper",
         "Interfaces",
         "PlayerKit",
