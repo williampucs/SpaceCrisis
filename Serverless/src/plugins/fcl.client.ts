@@ -13,7 +13,10 @@ export default defineNuxtPlugin((nuxtApp) => {
     .put("discovery.wallet", config.public.walletDiscovery)
     .put("sdk.transport", grpcSend)
     .put("app.detail.title", appConfig.title)
-    .put("app.detail.icon", "https://i.imgur.com/r23Zhvu.png")
+    .put(
+      "app.detail.icon",
+      window.location.origin + config.app.baseURL + "apple-touch-icon.png"
+    )
     .put("service.OpenID.scopes", "email email_verified name zoneinfo")
     .put("fcl.limit", 9999);
   // .put("fcl.accountProof.resolver", $fetch("/api/app-resolver"));

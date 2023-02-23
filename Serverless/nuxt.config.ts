@@ -7,7 +7,7 @@ export default defineNuxtConfig({
   srcDir: "src/",
   // App Variables
   appConfig: {
-    title: "Flow DApp",
+    title: "Space Crisis",
   },
   // Environment Variables
   runtimeConfig: {
@@ -15,6 +15,7 @@ export default defineNuxtConfig({
     // NOTHING
     // Keys within public, will be also exposed to the client-side
     public: {
+      flowServiceAddress: "",
       network: "",
       accessApi: "",
       walletDiscovery: "",
@@ -23,6 +24,34 @@ export default defineNuxtConfig({
   // ts config
   typescript: {
     shim: false,
+  },
+  app: {
+    head: {
+      link: [
+        // Favicons
+        {
+          rel: "apple-touch-icon",
+          sizes: "180x180",
+          href: "/apple-touch-icon.png",
+        },
+        {
+          rel: "icon",
+          type: "image/png",
+          sizes: "32x32",
+          href: "/favicon-32x32.png",
+        },
+        {
+          rel: "icon",
+          type: "image/png",
+          sizes: "16x16",
+          href: "/favicon-16x16.png",
+        },
+        {
+          rel: "manifest",
+          href: "/site.webmanifest",
+        },
+      ],
+    },
   },
   // installed modules
   modules: [

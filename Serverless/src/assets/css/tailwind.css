@@ -1,3 +1,32 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  body {
+    @apply font-sans;
+  }
+}
+
+
+@layer components {
+
+}
+
+@layer utilities {
+  .before-content {
+    content: "";
+    width: 0;
+    height: 100%;
+    display: inline-block;
+    vertical-align: middle;
+  }
+
+  .absolute-full {
+    @apply absolute top-0 left-0 w-full h-full flex-center;
+  }
+
+  .overlay {
+    @apply absolute-full bg-gray-700/60;
+  }
+}
