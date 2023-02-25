@@ -16,8 +16,8 @@ pub contract Interfaces {
     pub var isAttached: Bool
     pub fun getSource(): String
 
-    access(account) fun setAttached() {
-      self.isAttached = true
+    access(account) fun setAttached(_ flag: Bool) {
+      self.isAttached = flag
     }
   }
 

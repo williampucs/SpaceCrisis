@@ -235,6 +235,7 @@ pub contract GameServices {
     self.account.link<&ServicesHQ{ServicesHQPrivate}>(self.GameSerivcesPrivatePath, target: self.GameSerivcesStoragePath)
 
     self.account.save(<- create ServicesHQController(), to: self.GameServicesControlerStoragePath)
+    self.account.save(<- create ServicesHQAdmin(), to: self.GameServicesAdminStoragePath)
 
     emit ContractInitialized()
   }

@@ -110,17 +110,18 @@ pub contract PlayerKit {
         ))
       }
 
-      let uuid = profile.uuid
+      let ref = &profile as &{Interfaces.ProfilePublic, Interfaces.ProfilePrivate}
       self.profiles[sourceName] <-! profile
+      ref.setAttached(true)
 
-      emit ProfileAttached(source: sourceName, address: self.owner!.address, uuid: uuid)
+      emit ProfileAttached(source: sourceName, address: self.owner!.address, uuid: ref.uuid)
     }
 
     pub fun revokeProfile(_ source: String): @{Interfaces.ProfilePublic} {
       let profile <- self.profiles.remove(key: source) ?? panic("Profile not exist")
-      let uuid = profile.uuid
+      profile.setAttached(false)
 
-      emit ProfileRevoked(source: source, address: self.owner!.address, uuid: uuid)
+      emit ProfileRevoked(source: source, address: self.owner!.address, uuid: profile.uuid)
 
       return <- profile
     }

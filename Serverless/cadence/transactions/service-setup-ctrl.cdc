@@ -7,10 +7,7 @@ import GameServices from "../contracts/GameServices.cdc"
 // import SpaceCrisisGameService from "../contracts/space-crisis/SpaceCrisisGameService.cdc"
 // import SpaceCrisisPlayerProfile from "../contracts/space-crisis/SpaceCrisisPlayerProfile.cdc"
 
-transaction(
-    target: Address,
-    valid: Bool
-) {
+transaction {
 
     prepare(service: AuthAccount, acct: AuthAccount) {
         assert(

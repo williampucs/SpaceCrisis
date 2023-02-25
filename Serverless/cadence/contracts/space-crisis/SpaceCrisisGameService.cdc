@@ -19,7 +19,7 @@ pub contract SpaceCrisisGameService {
 
   pub resource interface ServicePublic {
     pub fun getArmories(): [String]
-    pub fun borrowArmory(key: String): &{SpaceCrisisDefination.ArmoryInterface}?
+    pub fun getArmory(key: String): {SpaceCrisisDefination.ArmoryInterface}?
     pub fun getAircrafts(): [String]
     pub fun getAircraftProperties(key: String): {String: AnyStruct}
 
@@ -56,8 +56,8 @@ pub contract SpaceCrisisGameService {
       return self.armories.keys
     }
 
-    pub fun borrowArmory(key: String): &{SpaceCrisisDefination.ArmoryInterface}? {
-      return &self.armories[key] as &{SpaceCrisisDefination.ArmoryInterface}?
+    pub fun getArmory(key: String): {SpaceCrisisDefination.ArmoryInterface}? {
+      return self.armories[key]
     }
 
     pub fun getAircrafts(): [String] {
@@ -74,9 +74,10 @@ pub contract SpaceCrisisGameService {
       let profileRef = SpaceCrisisPlayerProfile.borrowProfilePublic(identifier)
 
       for key in allTypes {
-        let armoryRef = self.borrowArmory(key: key)!
-        let level = armoryRef.getEquipmentLevel(identifier)
-        ret[key] = SpaceCrisisDefination.EquipmentStatus(key, enabled: level != 0.0, level: level)
+        if let armoryRef = &self.armories[key] as &{SpaceCrisisDefination.ArmoryInterface}? {
+          let level = armoryRef.getEquipmentLevel(identifier)
+          ret[key] = SpaceCrisisDefination.EquipmentStatus(key, enabled: level != 0.0, level: level)
+        }
       }
       return ret
     }
@@ -118,8 +119,19 @@ pub contract SpaceCrisisGameService {
       )
     }
 
-    // --- admin methods ----
-    // pub fun unlockAircraft
+    // --- profile control methods ----
+
+    pub fun profileUnlockAircraft(identifier: Helper.PlatformIdentity, key: String) {
+      let profile = GameServices.borrowProfileAuth(SpaceCrisisPlayerProfile.SOURCE_NAME, platform: identifier.platform, uid: identifier.uid)
+      let authRef = profile as! &SpaceCrisisPlayerProfile.Profile
+      authRef.unlockAircraft(key: key)
+    }
+
+    pub fun profileSetProperty(identifier: Helper.PlatformIdentity, prop: String, value: UFix64) {
+      let profile = GameServices.borrowProfileAuth(SpaceCrisisPlayerProfile.SOURCE_NAME, platform: identifier.platform, uid: identifier.uid)
+      let authRef = profile as! &SpaceCrisisPlayerProfile.Profile
+      authRef.setProperty(prop: prop, value: value)
+    }
   }
 
   pub fun borrowServicePublic(): &Service{ServicePublic, Interfaces.GameServicePublic} {

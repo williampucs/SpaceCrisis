@@ -1,6 +1,7 @@
 import Helper from "../Helper.cdc"
 import Interfaces from "../Interfaces.cdc"
 import GameServices from "../GameServices.cdc"
+import PlayerKit from "../PlayerKit.cdc"
 
 pub contract SpaceCrisisPlayerProfile {
   // events
@@ -38,7 +39,9 @@ pub contract SpaceCrisisPlayerProfile {
     }
 
     pub fun bindedPlatformInfo(): Helper.PlatformInfo {
-      return self.info
+      return !self.isAttached
+        ? self.info
+        : PlayerKit.borrowProfilesPublic(self.owner!.address)!.getIdentity(platform: self.info.identity.platform)!
     }
 
     pub fun getUnlockedAircrafts(): [String] {
