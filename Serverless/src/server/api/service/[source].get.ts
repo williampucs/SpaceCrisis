@@ -17,17 +17,27 @@ export default defineEventHandler<ResponseServiceFetch>(async (event) => {
     `assets/server/cadence/scripts/${params.source}/service-info-fetch.cdc`
   );
   if (typeof code !== "string") {
-    throw new Error("Invalid source or failed to load script");
+    throw createError({
+      statusCode: 400,
+      statusMessage: "Invalid source or failed to load script",
+    });
   }
   const info = await signer.executeScript(code, (arg, t) => [], null);
   if (!info || typeof info !== "object") {
-    throw new Error("Failed to load service info");
+    throw createError({
+      statusCode: 400,
+      statusMessage: "Failed to load service info",
+    });
   }
 
   return Object.assign(info, {
     availableArmories: info?.availableArmories?.map((one: any) =>
       parseArmory(one)
     ),
+    availableAircrafts:
+      info?.availableAircrafts?.map((one: string) => ({
+        key: one,
+      })) ?? [],
   });
 });
 

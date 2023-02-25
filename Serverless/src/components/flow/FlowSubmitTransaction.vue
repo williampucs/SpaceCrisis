@@ -10,17 +10,19 @@ const props = withDefaults(
     content?: string;
     action?: string;
     disabled?: boolean;
-    halfButton?: boolean;
+    hugeButton?: boolean;
     hideButton?: boolean;
     hideTrx?: boolean;
+    errorTimeout?: number;
   }>(),
   {
     content: "Submit",
     action: '',
     disabled: false,
-    halfButton: false,
+    hugeButton: false,
     hideButton: false,
     hideTrx: false,
+    errorTimeout: 3000,
   }
 );
 
@@ -65,7 +67,7 @@ function onSealed(tx: TransactionReceipt) {
     if (txid.value) {
       resetComponent()
     }
-  }, 3000);
+  }, props.errorTimeout);
 }
 
 function onError(msg: string) {
@@ -91,7 +93,7 @@ defineExpose({
 
 <template>
   <div class="flex flex-col gap-2 bg-native rounded-xl">
-    <button v-if="disabled && !txid" :class="['mb-0', halfButton ? '!rounded-b-xl' : '!rounded-xl']"
+    <button v-if="disabled && !txid" :class="[{ 'huge': hugeButton }]"
       role="button"
       disabled>
       <slot name="disabled">
@@ -99,19 +101,19 @@ defineExpose({
       </slot>
     </button>
     <template v-else-if="!hideButton && (!txid || !isSealed)">
-      <button :class="['mb-0', halfButton ? '!rounded-b-xl' : '!rounded-xl']" role="button"
+      <button :class="[{ 'huge': hugeButton }]" role="button"
         :aria-busy="isLoading || isSealed === false" :disabled="!isNetworkCorrect || isLoading || isSealed === false"
         :aria-disabled="!isNetworkCorrect || isLoading || isSealed === false" @click="startTransaction">
         <slot>
           {{ content }}
         </slot>
       </button>
-      <p v-if="errorMessage" class="w-full max-h-20 overflow-y-scroll bg-native px-4 mb-0 text-xs text-failure">
+      <p v-if="errorMessage" class="w-full max-h-20 overflow-y-scroll bg-native px-4 mb-0 text-xs text-red-600">
         {{ errorMessage }}
       </p>
       </template>
     <slot v-if="!hideButton && (txid && isSealed)" name="next">
-      <button :class="['mx-0 mb-0 text-sm', halfButton ? '!rounded-b-xl' : 'rounded-xl']" role="button"
+      <button :class="[{ 'huge': hugeButton }, 'px-4']" role="button"
         @click.stop.prevent="resetComponent">
         Close
       </button>
@@ -122,7 +124,7 @@ defineExpose({
           <h5 class="mb-0">{{ action }}</h5>
         </template>
         <template v-slot:append>
-          <pre v-if="errorMessage" class="w-full max-h-20 overflow-y-scroll bg-native px-4 mb-0 text-xs text-failure">
+          <pre v-if="errorMessage" class="w-full max-h-20 overflow-y-scroll bg-native px-4 mb-0 text-xs text-red-600">
             {{ errorMessage }}
           </pre>
         </template>

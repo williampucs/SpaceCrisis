@@ -17,19 +17,63 @@ async function main() {
     "utf8"
   );
 
+  const weapons = [
+    {
+      key: "weapon01",
+      useNFT: false,
+      max: "9.9",
+      ratio: "1.0",
+      extra: null,
+    },
+    {
+      key: "weapon02",
+      useNFT: true,
+      max: "9.9",
+      ratio: "1.0",
+      extra: "FLOAT",
+    },
+    {
+      key: "weapon03",
+      useNFT: true,
+      max: "9.9",
+      ratio: "0.25",
+      extra: "Starly",
+    },
+    {
+      key: "weapon04",
+      useNFT: true,
+      max: "9.9",
+      ratio: "0.25",
+      extra: "ThingFundMembershipBadge",
+    },
+  ];
+
+  const reduced = weapons.reduce(
+    (prev, curr) => {
+      prev.keys.push(curr.key);
+      prev.useNFTs.push(curr.useNFT);
+      prev.levelMaxs.push(curr.max);
+      prev.levelRatios.push(curr.ratio);
+      prev.extras.push(curr.extra);
+      return prev;
+    },
+    {
+      keys: [],
+      useNFTs: [],
+      levelMaxs: [],
+      levelRatios: [],
+      extras: [],
+    }
+  );
+
   const txid = await signer.sendTransaction(code, (arg, t) => [
     /**
-      keys: [String],
-      useNFTs: [Bool],
-      levelMaxs: [UFix64],
-      levelRatios: [UFix64],
-      extra: [String?],
      */
-    arg(["weapon01"], t.Array(t.String)),
-    arg([false], t.Array(t.Bool)),
-    arg(["9.9"], t.Array(t.UFix64)),
-    arg(["1.0"], t.Array(t.UFix64)),
-    arg([null], t.Array(t.Optional(t.String))),
+    arg(reduced.keys, t.Array(t.String)),
+    arg(reduced.useNFTs, t.Array(t.Bool)),
+    arg(reduced.levelMaxs, t.Array(t.UFix64)),
+    arg(reduced.levelRatios, t.Array(t.UFix64)),
+    arg(reduced.extras, t.Array(t.Optional(t.String))),
   ]);
 
   await utils.watchTransaction(signer, txid);

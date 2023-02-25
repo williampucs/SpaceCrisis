@@ -15,14 +15,20 @@ export default defineEventHandler<ResponseProfileFetch>(async (event) => {
 
   const [platform, uid] = params.userId.split("-");
   if (typeof platform !== "string" || typeof uid !== "string") {
-    throw new Error("Failed to parse userId");
+    throw createError({
+      statusCode: 400,
+      statusMessage: "Failed to parse userId",
+    });
   }
   // invoke scripts
   const code = await useStorage().getItem(
     `assets/server/cadence/scripts/${params.source}/profile-fetch.cdc`
   );
   if (typeof code !== "string") {
-    throw new Error("Invalid source or failed to load script");
+    throw createError({
+      statusCode: 400,
+      statusMessage: "Invalid source or failed to load script",
+    });
   }
   const info = await signer.executeScript(
     code,
@@ -30,7 +36,10 @@ export default defineEventHandler<ResponseProfileFetch>(async (event) => {
     null
   );
   if (!info || typeof info !== "object") {
-    throw new Error("Failed to load profile info");
+    throw createError({
+      statusCode: 400,
+      statusMessage: "Failed to load profile info",
+    });
   }
 
   const equipments: { [key: string]: EquipmentStatus } = {};
@@ -39,5 +48,11 @@ export default defineEventHandler<ResponseProfileFetch>(async (event) => {
   for (const key in info.equipments) {
     equipments[key] = parseEquipment(info.equipments[key]);
   }
-  return Object.assign(info, { equipments });
+  return Object.assign(info, {
+    equipments,
+    unlockedAircrafts:
+      info?.unlockedAircrafts?.map((one: string) => ({
+        key: one,
+      })) ?? [],
+  });
 });

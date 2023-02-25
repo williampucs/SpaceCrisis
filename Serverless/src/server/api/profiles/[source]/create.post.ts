@@ -24,7 +24,10 @@ export default defineEventHandler<ResponsePostBasics>(async (event) => {
     `assets/server/cadence/transactions/${params.source}/profile-create.cdc`
   );
   if (typeof code !== "string") {
-    throw new Error("Invalid source or failed to load script");
+    throw createError({
+      statusCode: 400,
+      statusMessage: "Invalid source or failed to load script",
+    });
   }
   const txid = await utils.sendTransactionWithKeyPool(
     signer,

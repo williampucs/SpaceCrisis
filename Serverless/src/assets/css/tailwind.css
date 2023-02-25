@@ -4,13 +4,167 @@
 
 @layer base {
   body {
+    @apply font-sans text-gray-800;
+  }
+
+  h1, h2, h3 {
+    @apply font-black;
+  }
+
+  h4, h5, h6 {
+    @apply font-semibold;
+  }
+
+  h1 {
+    @apply text-5xl mb-8;
+  }
+
+  h2 {
+    @apply text-4xl mb-6;
+  }
+
+  h3, h4 {
+    @apply text-3xl mb-5;
+  }
+
+  h5 {
+    @apply text-2xl mb-4;
+  }
+
+  h6 {
+    @apply text-xl mb-3;
+  }
+
+  p {
     @apply font-sans;
+    @apply font-light;
+    @apply text-sm mb-2;
+  }
+
+  pre {
+    @apply font-mono;
+    @apply font-light;
+    @apply text-sm mb-2;
+  }
+
+  label {
+    @apply font-sans;
+    @apply font-semibold;
+    @apply text-sm;
+  }
+
+  a::before {
+    @apply: before-content;
+  }
+
+  /**
+  * Loading ([aria-busy=true])
+  */
+
+  [aria-busy="true"] {
+    cursor: progress;
+  }
+
+  [aria-busy="true"]:not(input):not(select):not(textarea) {
+    &::before {
+      @apply inline-block w-4 h-4 align-text-bottom;
+      @apply animate-spin rounded-2xl opacity-80;
+      @apply border-[0.1875em] border-solid border-current border-r-transparent;
+      content: "";
+      vertical-align: -.125em;
+    }
+
+    &:not(:empty) {
+      &::before {
+        @apply mr-2 ml-0;
+        margin-inline-start: 0;
+        margin-inline-end: 0.5em;
+      }
+    }
+
+    &:empty {
+      @apply text-center;
+    }
+  }
+
+  button,
+  input[type="submit"],
+  input[type="button"],
+  input[type="reset"],
+  a {
+    &[aria-busy="true"] {
+      @apply pointer-events-none;
+    }
   }
 }
 
-
 @layer components {
+  .btn, button, [role="button"] {
+    @apply min-w-[40px] h-[40px] rounded-[20px];
+    @apply my-0 py-0 mx-2 px-[var(--btn-px)] shadow-md shadow-black/20 opacity-100;
+    /* Font */
+    @apply font-semibold text-sm text-center;
+    @apply inline-flex items-center justify-center;
+    /* Border */
+    @apply box-border border-solid border-white;
+    @apply border-0 hover:border-2 disabled:border-2;
+    --btn-px: 22px;
+    @apply hover:[--btn-px:20px] disabled:[--btn-px:20px];
+    /* Color */
+    @apply gradient-primary;
+    @apply disabled:from-[#E6E6E6] disabled:to-[#E5E5E5] disabled:text-white !important;
 
+    &.secondary {
+      @apply gradient-secondary;
+    }
+
+    &.rounded {
+      --btn-px: 14px;
+      @apply hover:[--btn-px:12px] disabled:[--btn-px:12px];
+    }
+
+    &.huge {
+      @apply h-[80px] rounded-[40px] text-2xl mx-0 sm:mx-3;
+
+      &.text-narrow {
+        @apply text-xl;
+      }
+    }
+
+    > svg {
+      @apply inline-block h-6 sm:h-8;
+    }
+  }
+
+  .hero {
+    @apply grid place-items-center w-full;
+    @apply bg-cover bg-center;
+
+    > * {
+      @apply col-start-1 row-start-1;
+    }
+
+    .hero-overlay {
+      @apply overlay bg-neutral-400/30;
+    }
+
+    .hero-content {
+      @apply flex justify-center items-center;
+      @apply z-0 max-w-7xl gap-4 py-20 px-2 sm:px-4 ;
+
+      &.narrow {
+        @apply max-w-5xl;
+      }
+
+      &.align-end {
+        @apply justify-end items-end;
+      }
+
+      &.align-start {
+        @apply justify-start items-start;
+      }
+    }
+  }
 }
 
 @layer utilities {
@@ -20,6 +174,20 @@
     height: 100%;
     display: inline-block;
     vertical-align: middle;
+  }
+
+  .gradient-primary {
+    @apply bg-gradient-to-r from-[#BFFFF8] to-[#E0FFC1];
+    @apply hover:from-[#BDFF7B] hover:to-[#52FFEB];
+  }
+
+  .gradient-secondary {
+    @apply bg-gradient-to-r from-[#FFEEC1] to-[#F1C1FF];
+    @apply hover:from-[#FFED5F] hover:to-[#E89BFF];
+  }
+
+  .flex-center {
+    @apply flex items-center justify-center;
   }
 
   .absolute-full {

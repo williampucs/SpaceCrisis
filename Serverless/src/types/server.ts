@@ -51,7 +51,7 @@ interface ArmoryDefination {
 interface ResponseServiceFetch extends ResponseBasics {
   name: string;
   availableArmories: ArmoryDefination[];
-  availableAircrafts: string[];
+  availableAircrafts: { key: string }[];
 }
 
 interface ResponseProfileFetch extends ResponseBasics {
@@ -59,7 +59,7 @@ interface ResponseProfileFetch extends ResponseBasics {
   isSelfAttached: boolean;
   ownerAddress?: string;
   info: PlatformInfo;
-  unlockedAircrafts: string[];
+  unlockedAircrafts: { key: string }[];
   currentAircraft?: string;
   equipments: { [key: string]: EquipmentStatus };
 }

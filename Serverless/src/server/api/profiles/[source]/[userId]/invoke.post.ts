@@ -22,14 +22,20 @@ export default defineEventHandler<ResponsePostBasics>(async (event) => {
 
   const [platform, uid] = params.userId.split("-");
   if (typeof platform !== "string" || typeof uid !== "string") {
-    throw new Error("Failed to parse userId");
+    throw createError({
+      statusCode: 400,
+      statusMessage: "Failed to parse userId",
+    });
   }
   // invoke scripts
   const code = await useStorage().getItem(
     `assets/server/cadence/transactions/${params.source}/profile-${body.method}.cdc`
   );
   if (typeof code !== "string") {
-    throw new Error("Invalid source or failed to load script");
+    throw createError({
+      statusCode: 400,
+      statusMessage: "Invalid source or failed to load script",
+    });
   }
   const schema = await useStorage().getItem(
     `assets/server/cadence/schemas/${params.source}/methods.json`
@@ -37,7 +43,10 @@ export default defineEventHandler<ResponsePostBasics>(async (event) => {
 
   const paramTypes: string[] = schema?.profile?.[body.method];
   if (!Array.isArray(paramTypes)) {
-    throw new Error("Invalid schema");
+    throw createError({
+      statusCode: 400,
+      statusMessage: "Invalid schema",
+    });
   }
 
   const txid = await utils.sendTransactionWithKeyPool(signer, code, (arg, t) =>

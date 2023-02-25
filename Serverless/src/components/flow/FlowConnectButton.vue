@@ -1,6 +1,12 @@
 <script setup lang="ts">
 import { Icon } from '@iconify/vue';
 
+withDefaults(defineProps<{
+  huge?: boolean
+}>(), {
+  huge: false
+})
+
 const current = useWalletAccount();
 const isNetworkCorrect = useNetworkCorrect();
 
@@ -39,9 +45,9 @@ function login() {
 </script>
 
 <template>
-<button class="!rounded-full mb-0" @click="login">
-  <div class="inline-flex-around">
-    <Icon icon="heroicons:user-20-solid" class="h-4 w-4" />
+<button :class="[{ 'huge': huge }]" @click="login">
+  <div class="inline-flex items-center justify-around gap-2">
+    <Icon icon="heroicons:user-20-solid" :class="[huge ? 'h-8 w-8' : 'h-4 w-4']" />
     <small>Connect<span class="hidden xl:inline"> Wallet</span></small>
   </div>
 </button>
