@@ -1,6 +1,5 @@
 export * as flow from "./flow.mjs";
 export { default as Signer } from "./signer.mjs";
-export * as actions from "./actions";
 export * as utils from "./utils";
 
 /**

@@ -3,7 +3,7 @@ import Helper from "../../../../../../cadence/contracts/Helper.cdc"
 // import PlayerKit from "../../../../../../cadence/contracts/PlayerKit.cdc"
 // import GameServices from "../../../../../../cadence/contracts/GameServices.cdc"
 // import ProfileClaimer from "../../../../../../cadence/contracts/ProfileClaimer.cdc"
-import SpaceCrisisDefination from "../../../../../../cadence/contracts/space-crisis/SpaceCrisisDefination.cdc"
+import SpaceCrisisDefinition from "../../../../../../cadence/contracts/space-crisis/SpaceCrisisDefinition.cdc"
 import SpaceCrisisGameService from "../../../../../../cadence/contracts/space-crisis/SpaceCrisisGameService.cdc"
 import SpaceCrisisPlayerProfile from "../../../../../../cadence/contracts/space-crisis/SpaceCrisisPlayerProfile.cdc"
 
@@ -14,7 +14,7 @@ pub fun main(
   let identifier = Helper.PlatformIdentity(platform, uid)
   if let profile = SpaceCrisisPlayerProfile.borrowProfilePublic(identifier) {
     let service = SpaceCrisisGameService.borrowServicePublic()
-    let equipments: {String: SpaceCrisisDefination.EquipmentStatus} = service.getProfileEquipments(identifier: identifier)
+    let equipments: {String: SpaceCrisisDefinition.EquipmentStatus} = service.getProfileEquipments(identifier: identifier)
     return ProfileData(
       userId: profile.getUserId(),
       isSelfAttached: profile.isAttached,
@@ -35,7 +35,7 @@ pub struct ProfileData {
   pub let info: Helper.PlatformInfo
   pub let unlockedAircrafts: [String]
   pub let currentAircraft: String?
-  pub let equipments: {String: SpaceCrisisDefination.EquipmentStatus}
+  pub let equipments: {String: SpaceCrisisDefinition.EquipmentStatus}
 
   init(
     userId: String,
@@ -44,7 +44,7 @@ pub struct ProfileData {
     info: Helper.PlatformInfo,
     unlockedAircrafts: [String],
     currentAircraft: String?,
-    equipments: {String: SpaceCrisisDefination.EquipmentStatus},
+    equipments: {String: SpaceCrisisDefinition.EquipmentStatus},
   ) {
     self.userId = userId
     self.isSelfAttached = isSelfAttached

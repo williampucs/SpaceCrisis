@@ -1,0 +1,77 @@
+@protocol = http
+@hostname = localhost
+@port = 3000
+@host = {{protocol}}://{{hostname}}:{{port}}
+@baseURL = {{host}}/api
+@serviceName = space-crisis
+
+###
+# @name getAppResolver
+GET {{baseURL}}/app-resolver
+Accept: application/json
+
+###
+# @name getAppServiceInfo
+GET {{baseURL}}/service/{{serviceName}}
+Accept: application/json
+
+###
+# @name createProfile
+POST {{baseURL}}/profiles/{{serviceName}}/create
+Accept: application/json
+Content-Type: application/json
+
+{
+  "platform": "dev",
+  "uid": "01"
+}
+
+###
+# @name getTransactionResult
+# @prompt txid transaction id to check
+GET {{baseURL}}/transactions/{{txid}}
+Accept: application/json
+
+###
+# @name getProfileInfo
+# @prompt userId user id, eg. dev-01 or google-1xx
+GET {{baseURL}}/profiles/{{serviceName}}/{{userId}}
+Accept: application/json
+
+###
+# @name invokeUnlockAircraft
+# @prompt userId user id, eg. dev-01 or google-1xx
+POST {{baseURL}}/profiles/{{serviceName}}/{{userId}}/invoke
+Accept: application/json
+Content-Type: application/json
+
+{
+  "method": "unlock-aircraft",
+  "params": ["02"]
+}
+
+###
+# @name invokeSetCurrentAircraft
+# @prompt userId user id, eg. dev-01 or google-1xx
+# @prompt aircraftId aircraft id
+POST {{baseURL}}/profiles/{{serviceName}}/{{userId}}/invoke
+Accept: application/json
+Content-Type: application/json
+
+{
+  "method": "set-aircraft",
+  "params": ["{{aircraftId}}"]
+}
+
+###
+# @name invokeSetProperty
+# @prompt userId user id, eg. dev-01 or google-1xx
+# @prompt value property value
+POST {{baseURL}}/profiles/{{serviceName}}/{{userId}}/invoke
+Accept: application/json
+Content-Type: application/json
+
+{
+  "method": "set-property",
+  "params": ["weapon01", "{{value}}"]
+}

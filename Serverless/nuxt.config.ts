@@ -1,24 +1,37 @@
+import fs from "fs";
+import path from "path";
 import inject from "@rollup/plugin-inject";
 import { nodePolyfills } from "vite-plugin-node-polyfills";
+
+const jsonStr = fs.readFileSync(path.join(process.cwd(), "flow.json"), "utf8");
+const flowJson = JSON.parse(jsonStr);
+const localContracts: string[] = [];
+for (const key in flowJson.contracts) {
+  if (typeof flowJson.contracts[key] === "string") {
+    localContracts.push(key);
+  }
+}
 
 // https://v3.nuxtjs.org/api/configuration/nuxt.config
 export default defineNuxtConfig({
   // set source dir
   srcDir: "src/",
   // App Variables
-  appConfig: {
-    title: "Space Crisis",
-  },
+  appConfig: {},
   // Environment Variables
   runtimeConfig: {
     // The private keys which are only available within server-side
-    // NOTHING
+    flowAdminAddress: "",
+    flowKeyAmount: "100",
+    flowPrivateKey: "",
     // Keys within public, will be also exposed to the client-side
     public: {
-      flowServiceAddress: "",
+      title: "Space Crisis",
       network: "",
       accessApi: "",
       walletDiscovery: "",
+      flowServiceAddress: "",
+      localContracts: localContracts.join(","),
     },
   },
   // ts config

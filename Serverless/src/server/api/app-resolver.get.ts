@@ -1,7 +1,8 @@
 import * as uuid from "uuid";
-import { APP_IDENTIFIER } from "../helpers/flow.mjs";
 
 export default defineEventHandler((event) => {
+  const config = useRuntimeConfig();
+
   const bytesA = uuid.parse(uuid.v1()) as Uint8Array;
   const bytesB = uuid.parse(uuid.v4()) as Uint8Array;
 
@@ -12,7 +13,7 @@ export default defineEventHandler((event) => {
     .join("");
   // return account proof data
   return {
-    appIdentifier: APP_IDENTIFIER,
+    appIdentifier: config.public.title,
     nonce,
     datetime: new Date(),
   };

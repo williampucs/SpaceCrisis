@@ -1,7 +1,5 @@
 import * as fcl from "@onflow/fcl";
 
-export const APP_IDENTIFIER = "Project U v0.1";
-
 export function switchToMainnet() {
   fcl
     .config()

@@ -1,0 +1,14 @@
+{
+  "profile": {
+    "set-property": [
+      "String",
+      "UFix64"
+    ],
+    "unlock-aircraft": [
+      "String"
+    ],
+    "set-aircraft": [
+      "String"
+    ]
+  }
+}

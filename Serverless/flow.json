@@ -9,7 +9,11 @@
 		"emulator-account": {
 			"address": "f8d6e0586b0a20c7",
 			"key": "32d0dbeec4442f46e97269f7413710911dcf4b7b46cbd2318523f2eeb742e037"
-		}
+    },
+    "testnet-admin": {
+      "address": "${NUXT_PUBLIC_FLOW_SERVICE_ADDRESS}",
+      "key": "${NUXT_FLOW_PRIVATE_KEY}"
+    }
 	},
 	"contracts": {
     "NonFungibleToken": {
@@ -92,7 +96,7 @@
     "PlayerKit": "./cadence/contracts/PlayerKit.cdc",
     "GameServices": "./cadence/contracts/GameServices.cdc",
     "ProfileClaimer": "./cadence/contracts/ProfileClaimer.cdc",
-    "SpaceCrisisDefination": "./cadence/contracts/space-crisis/SpaceCrisisDefination.cdc",
+    "SpaceCrisisDefinition": "./cadence/contracts/space-crisis/SpaceCrisisDefinition.cdc",
     "SpaceCrisisPlayerProfile": "./cadence/contracts/space-crisis/SpaceCrisisPlayerProfile.cdc",
     "SpaceCrisisGameService": "./cadence/contracts/space-crisis/SpaceCrisisGameService.cdc"
 	},
@@ -107,10 +111,22 @@
         "PlayerKit",
         "GameServices",
         "ProfileClaimer",
-        "SpaceCrisisDefination",
+        "SpaceCrisisDefinition",
         "SpaceCrisisPlayerProfile",
         "SpaceCrisisGameService"
       ]
-		}
+    },
+    "testnet": {
+      "testnet-admin": [
+        "Helper",
+        "Interfaces",
+        "PlayerKit",
+        "GameServices",
+        "ProfileClaimer",
+        "SpaceCrisisPlayerProfile",
+        "SpaceCrisisDefinition",
+        "SpaceCrisisGameService"
+      ]
+    }
 	}
 }

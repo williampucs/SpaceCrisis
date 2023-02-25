@@ -8,10 +8,11 @@ pub contract SpaceCrisisPlayerProfile {
   pub event ContractInitialized()
 
   pub event UnlockAircraft(userId: String, key: String)
+  pub event SetCurrentAircraft(userId: String, key: String)
   pub event SetProperty(userId: String, prop: String, value: UFix64)
 
   // members
-  pub let SOURCE_NAME: String
+  pub let sourceName: String
 
   pub resource interface ProfilePublic {
     pub fun getUnlockedAircrafts(): [String]
@@ -28,14 +29,14 @@ pub contract SpaceCrisisPlayerProfile {
 
     init(platform: String, uid: String) {
       self.isAttached = false
-      self.info = Helper.PlatformInfo(platform: platform, uid: uid, display: nil)
+      self.info = Helper.PlatformInfo(identity: Helper.PlatformIdentity(platform, uid), display: nil)
       self.currentAircraft = nil
       self.unlockedAircrafts = {}
       self.properties = {}
     }
 
     pub fun getSource(): String {
-      return SpaceCrisisPlayerProfile.SOURCE_NAME
+      return SpaceCrisisPlayerProfile.sourceName
     }
 
     pub fun bindedPlatformInfo(): Helper.PlatformInfo {
@@ -71,6 +72,18 @@ pub contract SpaceCrisisPlayerProfile {
       )
     }
 
+    access(account) fun setCurrentAircraft(key: String) {
+      pre {
+        self.unlockedAircrafts.containsKey(key): key.concat(" is not unlocked.")
+      }
+      self.currentAircraft = key
+
+      emit SetCurrentAircraft(
+        userId: self.getUserId(),
+        key: key,
+      )
+    }
+
     access(account) fun setProperty(prop: String, value: UFix64) {
       self.properties[prop] = value
 
@@ -83,7 +96,7 @@ pub contract SpaceCrisisPlayerProfile {
   }
 
   pub fun borrowProfilePublic(_ identifier: Helper.PlatformIdentity): &Profile{ProfilePublic, Interfaces.ProfilePublic}? {
-    let profile = GameServices.borrowProfileAuth(self.SOURCE_NAME, platform: identifier.platform, uid: identifier.uid)
+    let profile = GameServices.borrowProfileAuth(self.sourceName, platform: identifier.platform, uid: identifier.uid)
     if profile == nil {
       return nil
     }
@@ -95,7 +108,7 @@ pub contract SpaceCrisisPlayerProfile {
   }
 
   init() {
-    self.SOURCE_NAME = "SpaceCrisis"
+    self.sourceName = "SpaceCrisis"
 
     emit ContractInitialized()
   }

@@ -3,7 +3,7 @@
 // import PlayerKit from "../contracts/PlayerKit.cdc"
 import GameServices from "../contracts/GameServices.cdc"
 // import ProfileClaimer from "../contracts/ProfileClaimer.cdc"
-// import SpaceCrisisDefination from "../contracts/space-crisis/SpaceCrisisDefination.cdc"
+// import SpaceCrisisDefinition from "../contracts/space-crisis/SpaceCrisisDefinition.cdc"
 // import SpaceCrisisGameService from "../contracts/space-crisis/SpaceCrisisGameService.cdc"
 // import SpaceCrisisPlayerProfile from "../contracts/space-crisis/SpaceCrisisPlayerProfile.cdc"
 

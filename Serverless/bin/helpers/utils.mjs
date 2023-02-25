@@ -20,7 +20,7 @@ export function buildSigner(
       flow.switchToMainnet();
       break;
     case "testnet":
-      flow.switchToMainnet();
+      flow.switchToTestnet();
       break;
     case "emulator":
     default:

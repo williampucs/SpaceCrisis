@@ -10,8 +10,7 @@ import SpaceCrisisGameService from "../../../../../../cadence/contracts/space-cr
 transaction(
   platform: String,
   uid: String,
-  prop: String,
-  value: UFix64,
+  key: String,
 ) {
     let ctrler: &GameServices.ServicesHQController
     let service: &SpaceCrisisGameService.Service
@@ -24,6 +23,6 @@ transaction(
     }
 
     execute {
-      self.service.profileSetProperty(identifier: Helper.PlatformIdentity(platform, uid), prop: prop, value: value)
+      self.service.profileSetCurrentAircraft(identifier: Helper.PlatformIdentity(platform, uid), key: key)
     }
 }

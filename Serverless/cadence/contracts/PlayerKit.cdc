@@ -104,8 +104,7 @@ pub contract PlayerKit {
         )
       } else {
         self.upsertIdentity(info: Helper.PlatformInfo(
-          platform: bindedPlatform.identity.platform,
-          uid: bindedPlatform.identity.platform,
+          identity: bindedPlatform.identity,
           display: bindedPlatform.display
         ))
       }

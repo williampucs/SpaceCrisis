@@ -3,21 +3,21 @@ import Helper from "../../../../../../cadence/contracts/Helper.cdc"
 // import PlayerKit from "../../../../../../cadence/contracts/PlayerKit.cdc"
 // import GameServices from "../../../../../../cadence/contracts/GameServices.cdc"
 // import ProfileClaimer from "../../../../../../cadence/contracts/ProfileClaimer.cdc"
-import SpaceCrisisDefination from "../../../../../../cadence/contracts/space-crisis/SpaceCrisisDefination.cdc"
+import SpaceCrisisDefinition from "../../../../../../cadence/contracts/space-crisis/SpaceCrisisDefinition.cdc"
 import SpaceCrisisGameService from "../../../../../../cadence/contracts/space-crisis/SpaceCrisisGameService.cdc"
 // import SpaceCrisisPlayerProfile from "../../../../../../cadence/contracts/space-crisis/SpaceCrisisPlayerProfile.cdc"
 
 pub fun main(): ServiceInfo {
   let service = SpaceCrisisGameService.borrowServicePublic()
   let keys = service.getArmories()
-  let availableArmories: [{SpaceCrisisDefination.ArmoryInterface}] = []
+  let availableArmories: [{SpaceCrisisDefinition.ArmoryInterface}] = []
   for key in keys {
     if let armory = service.getArmory(key: key) {
       availableArmories.append(armory)
     }
   }
   return ServiceInfo(
-    name: SpaceCrisisGameService.SOURCE_NAME,
+    name: SpaceCrisisGameService.sourceName,
     availableAircrafts: service.getAircrafts(),
     availableArmories: availableArmories
   )
@@ -25,13 +25,13 @@ pub fun main(): ServiceInfo {
 
 pub struct ServiceInfo {
   pub let name: String
-  pub let availableArmories: [{SpaceCrisisDefination.ArmoryInterface}]
+  pub let availableArmories: [{SpaceCrisisDefinition.ArmoryInterface}]
   pub let availableAircrafts: [String]
 
   init(
     name: String,
     availableAircrafts: [String],
-    availableArmories: [{SpaceCrisisDefination.ArmoryInterface}],
+    availableArmories: [{SpaceCrisisDefinition.ArmoryInterface}],
   ) {
     self.name = name
     self.availableArmories = availableArmories

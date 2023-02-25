@@ -389,10 +389,13 @@ declare module "@onflow/fcl" {
 
   export interface WalletUtils {
     encodeAccountProof: (
-      accountProofData: AccountProofData,
+      accountProofData: {
+        address: string;
+        nonce: string;
+        appIdentifier: string;
+      },
       includeDomainTag?: boolean
     ) => string;
-    // TODO add more
   }
   export const WalletUtils: WalletUtils;
 

@@ -20,8 +20,8 @@ pub contract Helper {
     pub let identity: PlatformIdentity
     pub let display: MetadataViews.Display?
 
-    init(platform: String, uid: String, display: MetadataViews.Display?) {
-      self.identity = PlatformIdentity(platform, uid)
+    init(identity: PlatformIdentity, display: MetadataViews.Display?) {
+      self.identity = identity
       self.display = display
     }
   }

@@ -174,7 +174,10 @@ pub contract GameServices {
       let service = hq.borrowService(source) ?? panic("Invalid service source.")
       let profilesRef = hq.borrowGuestProfiles(source)
 
-      let userId = Helper.PlatformIdentity(platform, uid).toString()
+      let identifier = Helper.PlatformIdentity(platform, uid)
+      assert(GameServices.borrowProfileAuth(source, platform: platform, uid: uid) == nil, message: "Profile exists.")
+
+      let userId = identifier.toString()
       profilesRef[userId] <-! service.createProfile(platform: platform, uid: uid)
 
       emit ProfileCreated(source: source, platform: platform, uid: uid)
