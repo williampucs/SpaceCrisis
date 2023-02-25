@@ -19,7 +19,7 @@ transaction(
     prepare(acct: AuthAccount) {
       self.ctrler = acct.borrow<&GameServices.ServicesHQController>(from: GameServices.GameServicesControlerStoragePath)
                 ?? panic("Not the service account.")
-      let gameService = self.ctrler.borrowServiceAuth(SpaceCrisisGameService.SOURCE_NAME)
+      let gameService = self.ctrler.borrowServiceAuth(SpaceCrisisGameService.SOURCE_NAME) ?? panic("Failed to load")
       self.service = gameService as! &SpaceCrisisGameService.Service
     }
 

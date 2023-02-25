@@ -17,9 +17,9 @@ transaction(
     let service: &SpaceCrisisGameService.Service
 
     prepare(acct: AuthAccount) {
-      let admin = acct.borrow<&GameServices.ServicesHQAdmin>(from: GameServices.GameServicesAdminStoragePath)
+      let ctrler = acct.borrow<&GameServices.ServicesHQController>(from: GameServices.GameServicesControlerStoragePath)
                 ?? panic("Not the service account.")
-      let gameService = admin.borrowServiceAdmin(SpaceCrisisGameService.SOURCE_NAME)
+      let gameService = ctrler.borrowServiceAuth(SpaceCrisisGameService.SOURCE_NAME) ?? panic("Failed to load")
       self.service = gameService as! &SpaceCrisisGameService.Service
     }
 

@@ -1,7 +1,8 @@
 import env from "dotenv";
+import fs from "fs";
+import path from "path";
 import * as flow from "../../src/server/helpers/flow.mjs";
 import Signer from "../../src/server/helpers/signer.mjs";
-import flowJson from "../../flow.json";
 
 env.config();
 
@@ -27,6 +28,11 @@ export function buildSigner(
       break;
   }
 
+  const jsonStr = fs.readFileSync(
+    path.join(process.cwd(), "flow.json"),
+    "utf8"
+  );
+  const flowJson = JSON.parse(jsonStr);
   let addressMap = {};
   for (const key in flowJson.contracts) {
     let one = flowJson.contracts[key];
