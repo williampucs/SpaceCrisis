@@ -17,13 +17,13 @@ Accept: application/json
 
 ###
 # @name createProfile
-POST {{baseURL}}/profiles/{{serviceName}}/create
+POST {{baseURL}}/profiles/{{serviceName}}
 Accept: application/json
 Content-Type: application/json
 
 {
   "platform": "dev",
-  "uid": "01"
+  "uid": "04"
 }
 
 ###
