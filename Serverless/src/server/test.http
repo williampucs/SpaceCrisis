@@ -8,18 +8,15 @@
 ###
 # @name getAppResolver
 GET {{baseURL}}/app-resolver
-Accept: application/json
 
 ###
 # @name getAppServiceInfo
 GET {{baseURL}}/service/{{serviceName}}
-Accept: application/json
 
 ###
 # @name createProfile
 POST {{baseURL}}/profiles/{{serviceName}}
-Accept: application/json
-Content-Type: application/json
+# Content-Type: application/json
 
 {
   "platform": "dev",
@@ -30,20 +27,17 @@ Content-Type: application/json
 # @name getTransactionResult
 # @prompt txid transaction id to check
 GET {{baseURL}}/transactions/{{txid}}
-Accept: application/json
 
 ###
 # @name getProfileInfo
 # @prompt userId user id, eg. dev-01 or google-1xx
 GET {{baseURL}}/profiles/{{serviceName}}/{{userId}}
-Accept: application/json
 
 ###
 # @name invokeUnlockAircraft
 # @prompt userId user id, eg. dev-01 or google-1xx
 POST {{baseURL}}/profiles/{{serviceName}}/{{userId}}/invoke
-Accept: application/json
-Content-Type: application/json
+# Content-Type: application/json
 
 {
   "method": "unlock-aircraft",
@@ -55,8 +49,7 @@ Content-Type: application/json
 # @prompt userId user id, eg. dev-01 or google-1xx
 # @prompt aircraftId aircraft id
 POST {{baseURL}}/profiles/{{serviceName}}/{{userId}}/invoke
-Accept: application/json
-Content-Type: application/json
+# Content-Type: application/json
 
 {
   "method": "set-aircraft",
@@ -68,8 +61,7 @@ Content-Type: application/json
 # @prompt userId user id, eg. dev-01 or google-1xx
 # @prompt value property value
 POST {{baseURL}}/profiles/{{serviceName}}/{{userId}}/invoke
-Accept: application/json
-Content-Type: application/json
+# Content-Type: application/json
 
 {
   "method": "set-property",

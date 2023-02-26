@@ -101,5 +101,13 @@ export default defineNuxtConfig({
   },
   nitro: {
     preset: "vercel",
+    routeRules: {
+      "/api/**": {
+        cors: true,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      },
+    },
   },
 });

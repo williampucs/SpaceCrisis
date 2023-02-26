@@ -24,6 +24,9 @@
     "update:emulator": "npx dotenv-cli -c emulator -- flow project deploy --update",
     "update:testnet": "npx dotenv-cli -c testnet -- flow project deploy --network=testnet --update"
   },
+  "resolutions": {
+    "nitropack": "^2.2.3"
+  },
   "devDependencies": {
     "@iconify/vue": "^4.1.0",
     "@nuxtjs/tailwindcss": "^6.4.1",
