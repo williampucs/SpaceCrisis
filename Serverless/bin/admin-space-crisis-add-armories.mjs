@@ -20,31 +20,31 @@ async function main() {
   const weapons = [
     {
       key: "weapon01",
-      useNFT: false,
-      max: "9.9",
-      ratio: "1.0",
-      extra: null,
-    },
-    {
-      key: "weapon02",
       useNFT: true,
-      max: "9.9",
+      max: "16.0",
       ratio: "1.0",
       extra: "FLOAT",
     },
     {
-      key: "weapon03",
+      key: "weapon02",
       useNFT: true,
-      max: "9.9",
-      ratio: "0.25",
+      max: "24.0",
+      ratio: "0.15",
       extra: "Starly",
     },
     {
-      key: "weapon04",
+      key: "weapon03",
       useNFT: true,
-      max: "9.9",
-      ratio: "0.25",
+      max: "18.0",
+      ratio: "0.3",
       extra: "ThingFundMembershipBadge",
+    },
+    {
+      key: "weapon04",
+      useNFT: false,
+      max: "99999.0",
+      ratio: "1.0",
+      extra: null,
     },
   ];
 
