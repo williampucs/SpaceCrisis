@@ -42,6 +42,7 @@ TGS provides a comprehensive framework for game developers to build blockchain g
 
 These are our deliveries for <https://flow-hackathon.devfolio.co/>
 
+- Project page: [View on DevFolio](https://devfolio.co/projects/tgsthe-game-service-kit-59de)
 - Source Code for TGS: This repo
 - Slides: [View Deck](https://www.necroz.com/g/?2cR)
 - Demo Video: [Video Online URL]
