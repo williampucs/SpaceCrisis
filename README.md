@@ -1,6 +1,6 @@
-# TGS Kit - The Game Services Kit
+# TGS - The Game Services Kit
 
-[Logo Image]
+![Head Image](https://i.imgur.com/EZgBMqYh.png)
 
 TGS is a universal framework that provides game data services on the blockchain. It allows game developers to focus more on game development itself rather than spending a lot of time learning the complex use of smart contracts. Additionally, its social login priority and walletless login process also enable blockchain games to support quick trial experiences that are applicable to traditional games, with wallet integration placed later in the experience flow. Its environment state synchronization feature can also keep the on-chain and off-chain data of the game in sync with logical consistency.
 
@@ -21,6 +21,16 @@ TGS provides environment state synchronization functionality, which enables game
 ### Easy Integration
 
 TGS has a simple and easy-to-use API that game developers can use to integrate their game with TGS. This allows game developers to focus more on the development of their game, rather than spending a lot of time learning how to use blockchain technology.
+
+## Interaction Flow
+
+version 1.0 - MVP Basic
+
+![V1](https://i.imgur.com/IufjUzZ.png)
+
+version 2.0 - Full
+
+![V2](https://i.imgur.com/tqHACRN.png)
 
 ## Hackathon Delivery
 
