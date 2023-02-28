@@ -9,13 +9,38 @@ export default defineEventHandler<ResponsePostBasics>(async (event) => {
       userId: z.string(),
     })
   );
-  const body = await useValidatedBody(
-    event,
-    z.object({
-      method: z.string(),
-      params: z.array(z.string()),
-    })
-  );
+
+  let body: ReqOptionsInvokeMethod;
+  const b = await readBody(event);
+  if (typeof b === "object") {
+    body = await useValidatedBody(
+      event,
+      z.object({
+        method: z.string(),
+        params: z.array(z.string()),
+      })
+    );
+  } else if (typeof b === "string") {
+    const url = new URL("http://localhost/?" + b);
+    const method = url.searchParams.get("method");
+    const params = url.searchParams.get("params");
+    if (method && params) {
+      body = {
+        method,
+        params: params.split(","),
+      };
+    } else {
+      throw createError({
+        statusCode: 400,
+        statusMessage: `Invalid paramters: ${JSON.stringify(b)}`,
+      });
+    }
+  } else {
+    throw createError({
+      statusCode: 400,
+      statusMessage: `Invalid paramters: ${JSON.stringify(b)}`,
+    });
+  }
 
   // initialize
   const signer = utils.initializeSigner();

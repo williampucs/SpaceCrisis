@@ -1,4 +1,4 @@
-// import Helper from "../../../../../../cadence/contracts/Helper.cdc"
+import Helper from "../../../../../../cadence/contracts/Helper.cdc"
 // import Interfaces from "../../../../../../cadence/contracts/Interfaces.cdc"
 // import PlayerKit from "../../../../../../cadence/contracts/PlayerKit.cdc"
 import GameServices from "../../../../../../cadence/contracts/GameServices.cdc"
@@ -12,13 +12,20 @@ transaction(
   uid: String,
 ) {
     let ctrler: &GameServices.ServicesHQController
+    let service: &SpaceCrisisGameService.Service
 
     prepare(acct: AuthAccount) {
       self.ctrler = acct.borrow<&GameServices.ServicesHQController>(from: GameServices.GameServicesControlerStoragePath)
                 ?? panic("Not the service account.")
+      let gameService = self.ctrler.borrowServiceAuth(SpaceCrisisGameService.sourceName) ?? panic("Failed to load")
+      self.service = gameService as! &SpaceCrisisGameService.Service
     }
 
     execute {
       self.ctrler.createProfile(SpaceCrisisGameService.sourceName, platform: platform, uid: uid)
+
+      // unlock default aircraft
+      let aircrafts = self.service.getAircrafts()
+      self.service.profileUnlockAircraft(identifier: Helper.PlatformIdentity(platform, uid), key: aircrafts[aircrafts.length - 1])
     }
 }

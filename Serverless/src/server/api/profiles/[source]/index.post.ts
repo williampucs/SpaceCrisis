@@ -31,6 +31,11 @@ export default defineEventHandler<ResponsePostBasics>(async (event) => {
         statusMessage: `Invalid paramters: ${JSON.stringify(b)}`,
       });
     }
+  } else {
+    throw createError({
+      statusCode: 400,
+      statusMessage: `Invalid paramters: ${JSON.stringify(b)}`,
+    });
   }
 
   // initialize
